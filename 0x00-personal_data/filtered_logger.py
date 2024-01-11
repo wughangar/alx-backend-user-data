@@ -54,7 +54,7 @@ class RedactingFormatter(logging.Formatter):
         return super().format(record)
 
 
-def get_logger():
+def get_logger() -> logging.Logger:
     """Create and configure a logger"""
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
