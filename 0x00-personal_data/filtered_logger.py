@@ -6,8 +6,12 @@ import re
 from typing import List
 
 
-def filter_datum(fields: List, redaction: str,
-                 message: str, separator: str) -> str:
+def filter_datum(
+        fields: List,
+        redaction: str,
+        message: str,
+        separator: str
+        ) -> str:
     """
     function that returns the log message
     args:
