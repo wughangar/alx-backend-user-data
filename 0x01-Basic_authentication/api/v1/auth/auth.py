@@ -11,7 +11,7 @@ class Auth:
     """ auth class"""
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
-        public method to ceck if auth is required
+        public method
         Returns:
             True if path is None or excluded_paths is None or empty.
             False if path is in excluded_paths (slash tolerant).
