@@ -16,7 +16,7 @@ class Auth:
             True if path is None or excluded_paths is None or empty.
             False if path is in excluded_paths (slash tolerant).
         """
-        if path is None or not in excluded_paths:
+        if path is None or not excluded_paths:
             return True
         else:
             return path.rstrip('/') in excluded_paths
