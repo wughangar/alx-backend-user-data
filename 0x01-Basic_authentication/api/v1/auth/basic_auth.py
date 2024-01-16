@@ -5,7 +5,7 @@
 
 from api.v1.auth.auth import Auth
 import base64
-
+from typing import TypeVar, List
 
 class BasicAuth(Auth):
     """
@@ -21,6 +21,6 @@ class BasicAuth(Auth):
         if authorization_header is None or not
         isinstance(authorization_header, str):
             return None
-        if not authorization_header.startswith('Basic '):
+        if not authorization_header.startswith('Basic'):
             return None
         return authorization_header[6:]
