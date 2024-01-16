@@ -23,4 +23,4 @@ class BasicAuth(Auth):
             return None
         if not authorization_header.startswith('Basic '):
             return None
-        return authorization_header.split(' ', 1)[1]
+        return authorization_header[6:]
