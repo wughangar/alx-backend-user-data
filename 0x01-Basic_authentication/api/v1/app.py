@@ -30,14 +30,12 @@ def before_request():
     """
     before request handler
     """
-    if auth is None:
-        return
-    if request.path not in public_paths:
-        if not auth.require_auth(request.path, excluded_paths=public_paths):
+    public_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
+                    '/api/v1/forbidden/']
+    if auth and auth.require_auth(request.path, public_paths):
+        if not auth.authorization_header(request):
             abort(401)
-        if auth.authorization_header(request) is None:
-            abort(401)
-        if auth.current_user(request) is None:
+        if not auth.current_user(request):
             abort(403)
 
 
