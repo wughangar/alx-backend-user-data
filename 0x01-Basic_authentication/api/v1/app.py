@@ -17,10 +17,10 @@ auth = None
 
 
 auth_typ = getenv("AUTH_TYPE")
-if auth_typ == "auth":
-    auth = Auth()
-elif auth_typ == ("basic_auth"):
+if auth_typ == "basic_auth":
     auth = BasicAuth()
+else:
+    auth = Auth()
 
 public_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
                 '/api/v1/forbidden/']
