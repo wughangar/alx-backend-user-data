@@ -31,14 +31,13 @@ def before_request():
     """
     before request handler
     """
-    public_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
-                    '/api/v1/forbidden/']
-    if auth and auth.require_auth(request.path, public_paths):
+    if auth and request.path not in public_paths:
+        if not auth.require_auth(request.path, public_paths):
+            abort(401)
         if not auth.authorization_header(request):
             abort(401)
         if not auth.current_user(request):
             abort(403)
-
 
 @app.errorhandler(404)
 def not_found(error) -> str:
