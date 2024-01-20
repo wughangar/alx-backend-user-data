@@ -22,8 +22,8 @@ if auth_typ == "basic_auth":
 else:
     auth = Auth()
 
-public_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
-                '/api/v1/forbidden/']
+public_paths = ['/api/v1/status', '/api/v1/unauthorized',
+                '/api/v1/forbidden', '/api/v1/users']
 
 
 @app.before_request
@@ -31,15 +31,21 @@ def before_request():
     """
     before request handler
     """
+    print("DEBUG: Request Path:", request.path)
+    print("DEBUG: Is Public Path?", request.path in public_paths)
     if auth and request.path not in public_paths:
         if not auth.require_auth(request.path, public_paths):
+            print("DEBUG: Authentication required but not enforced")
             abort(401)
         if not auth.authorization_header(request):
+            print("DEBUG: Authorization header missing")
             abort(401)
         if not auth.current_user(request):
+            print("DEBUG: No current user identified")
             abort(403)
 
     request.current_user = auth.current_user(request)
+    print("DEBUG: Current User:", request.current_user)
 
 @app.errorhandler(404)
 def not_found(error) -> str:
