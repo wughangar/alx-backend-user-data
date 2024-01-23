@@ -59,3 +59,22 @@ class DB:
             raise e
         except InvalidRequestError as e:
             raise e
+
+    def update_user(self,user_id: int, **kwargs):
+        """
+        function that takes user_id and arbitrary keyweords
+        args and return None
+        """
+        user = self.find_user_by(id=user_id)
+
+        for key, value in kwargs.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
+            else:
+                raise ValueError(f"Invalid argument: {key}")
+        try:
+            self._session.commit()
+        except InvalidRequestError as e:
+            self._session.rollback()
+            raise e
+
