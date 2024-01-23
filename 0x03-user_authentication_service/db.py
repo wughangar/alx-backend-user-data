@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
-
+from typing import Optional
 
 from user import Base
 from user import User
@@ -60,7 +60,7 @@ class DB:
         except InvalidRequestError as e:
             raise e
 
-    def update_user(self,user_id: int, **kwargs):
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
         function that takes user_id and arbitrary keyweords
         args and return None
@@ -77,4 +77,3 @@ class DB:
         except InvalidRequestError as e:
             self._session.rollback()
             raise e
-
