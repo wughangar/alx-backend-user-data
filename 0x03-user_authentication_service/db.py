@@ -48,7 +48,7 @@ class DB:
         function that finds and returns the first occurance if the user
         """
         try:
-            user = self._session.query(User).filter_by(email=email).first()
+            user = self._session.query(User).filter_by(email=email).one()
             return user
         except NoResultFound as e:
             raise e

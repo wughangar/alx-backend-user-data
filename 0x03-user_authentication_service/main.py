@@ -2,10 +2,8 @@
 """
 Main file
 """
-
 from db import DB
 from user import User
-
 
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
@@ -29,6 +27,4 @@ try:
     find_user = my_db.find_user_by(no_email="test@test.com")
     print(find_user.id)
 except InvalidRequestError:
-    print("Invalid")        
-
-
+    print("Invalid")
