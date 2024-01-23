@@ -43,12 +43,17 @@ class DB:
         self._session.commit()
         return new_user
 
-    def find_user_by(self, email: str) -> User:
+    def find_user_by(self, **kwargs) -> User:
         """
         function that finds and returns the first occurance if the user
         """
+        valid_keys = {'id', 'email', 'hashed_password', 'session_id',
+                      'reset_token'}
+        unexpected_keys = set(kwargs) - valid_keys
+        if unexpected_keys:
+            raise InvalidRequestError(f"Invalid keys: {unexpected_keys}")
         try:
-            user = self._session.query(User).filter_by(email=email).one()
+            user = self._session.query(User).filter_by(**kwargs).one()
             return user
         except NoResultFound as e:
             raise e
