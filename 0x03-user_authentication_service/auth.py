@@ -46,10 +46,11 @@ class Auth:
         """
         function that validates credentials of a user
         """
-        existing_user = self._db.find_user_by(email=email)
-        if existing_user:
+        try:
+            existing_user = self._db.find_user_by(email=email)
             hashed_password = existing_user.hashed_password
             correct_password = bcrypt.checkpw(
                     password.encode('utf-8'), hashed_password)
             return correct_password
-        return False
+        except NoResultFound:
+            return False
