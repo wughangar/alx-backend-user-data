@@ -11,6 +11,15 @@ from uuid import uuid4
 import logging
 
 
+def _hash_password(self, password: str) -> bytes:
+    """
+    function that takes password and returns bytes
+    """
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed_password
+
+
 def _generate_uuid() -> str:
     """
     function that generates uuid and returns a str
@@ -24,14 +33,6 @@ class Auth:
 
     def __init__(self):
         self._db = DB()
-
-    def _hash_password(self, password: str) -> bytes:
-        """
-        function that takes password and returns bytes
-        """
-        salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-        return hashed_password
 
     def register_user(self, email: str, password: str) -> User:
         """
