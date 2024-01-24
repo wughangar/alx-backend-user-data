@@ -9,7 +9,7 @@ from user import User
 from sqlalchemy.orm.exc import NoResultFound
 from uuid import uuid4
 import logging
-from typing import Union
+from typing import Union, Optional
 
 
 def _hash_password(password: str) -> bytes:
@@ -106,9 +106,6 @@ class Auth:
         destroys session for the user with given user_id
         updates user's id to none
         """
-        try:
-            existing_user = self._db.find_user_by(id=user_id)
-            user.session_id = None
-            self._db.commit()
-        except NoResultFound:
-            pass
+        if user_id is None:
+            return None
+        self.db.update_user(user_id, session_id=None)
