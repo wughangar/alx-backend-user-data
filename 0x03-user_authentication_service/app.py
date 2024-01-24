@@ -2,8 +2,13 @@
 """
 basic flask app
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response, abort
 from auth import Auth
+import logging
+
+
+logging.disable(logging.WARNING)
+
 
 AUTH = Auth()
 
@@ -28,6 +33,22 @@ def register_user():
                 {"email": new_user.email, "message": "user created"}), 200
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
+
+
+@app.route('/sessions', methods=['POST'])
+def login() -> str:
+    """
+    function that allows log in
+    """
+    email = request.form.get("email")
+    password = request.form.get("password")
+    if not AUTH.valid_login(email, password):
+        abort(401)
+
+    session = AUTH.create_session(email)
+    feedback = jsonify({"email": email, "message": "logged in"})
+    feedback.set_cookie("session_id", session_id)
+    return feedback
 
 
 if __name__ == "__main__":
