@@ -11,6 +11,13 @@ from uuid import uuid4
 import logging
 
 
+def _generate_uuid() -> str:
+    """
+    function that generates uuid and returns a str
+    """
+    return str(uuid4())
+
+
 class Auth:
     """Auth class to interact with the authentication database.
     """
@@ -59,9 +66,3 @@ class Auth:
         except NoResultFound:
             return False
         return False
-
-    def _generate_uuid() -> str:
-        """
-        function that generates uuid and returns a str
-        """
-        return str(uuid4())
