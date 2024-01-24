@@ -9,6 +9,7 @@ from user import User
 from sqlalchemy.orm.exc import NoResultFound
 from uuid import uuid4
 import logging
+from typing import Union
 
 
 def _hash_password(password: str) -> bytes:
@@ -95,7 +96,7 @@ class Auth:
         if session_id is None:
             return None
         try:
-            user = self._db.find_user_by(session_id=session_id)
-            return user
+            existing_user = self._db.find_user_by(session_id=session_id)
         except NoResultFound:
             return None
+        return existing_user
