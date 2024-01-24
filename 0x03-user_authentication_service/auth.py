@@ -7,6 +7,8 @@ import bcrypt
 from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
+from uuid import uuid4
+import logging
 
 
 class Auth:
@@ -48,9 +50,12 @@ class Auth:
         """
         try:
             existing_user = self._db.find_user_by(email=email)
-            hashed_password = existing_user.hashed_password
-            correct_password = bcrypt.checkpw(
-                    password.encode('utf-8'), hashed_password)
-            return correct_password
+            if existing_user is not None:
+                hashed_password = existing_user.hashed_password
+                correct_password = bcrypt.checkpw(
+                        password.encode('utf-8'), hashed_password)
+                if correct_password:
+                    return True
         except NoResultFound:
             return False
+        return False
