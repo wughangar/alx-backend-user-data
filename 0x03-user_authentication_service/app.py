@@ -51,7 +51,7 @@ def login() -> str:
     return feedback
 
 
-@app.route('/sessions', methods=['DELETE'])
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> str:
     session_id = request.cookies.get('session_id')
     existing_user = AUTH.get_user_from_session_id(session_id)
