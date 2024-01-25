@@ -4,12 +4,6 @@ basic flask app
 """
 from flask import Flask, jsonify, request, make_response, abort, redirect
 from auth import Auth
-import logging
-
-
-logging.disable(logging.WARNING)
-
-
 AUTH = Auth()
 
 app = Flask(__name__)
@@ -54,26 +48,23 @@ def login() -> str:
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> str:
     session_id = request.cookies.get('session_id')
-    existing_user = AUTH.get_user_from_session_id(session_id)
-
-    if existing_user is None:
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        AUTH.destroy_session(user.id)
+        return redirect("/")
+    else:
         abort(403)
 
-    AUTH.destroy_session(user.id)
-    return redirect("/")
 
-
-@app.route('/profile', methods=['GET'])
+@app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile() -> str:
     """
     function that handles get profile request
     """
     session_id = request.cookies.get('session_id')
-    if session_id is None:
-        abort(403)
     user = AUTH.get_user_from_session_id(session_id)
 
-    if user is not None:
+    if user:
         return jsonify({"email": user.email}), 200
     else:
         abort(403)
